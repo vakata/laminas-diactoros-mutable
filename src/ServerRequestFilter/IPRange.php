@@ -22,7 +22,7 @@ final class IPRange
     /**
      * Disable instantiation
      */
-    private function __construct()
+    protected function __construct()
     {
     }
 

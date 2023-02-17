@@ -33,9 +33,9 @@ class ServerRequest implements ServerRequestInterface
 {
     use RequestTrait;
 
-    private array $attributes = [];
+    protected array $attributes = [];
 
-    private array $uploadedFiles;
+    protected array $uploadedFiles;
 
     /**
      * @param array $serverParams Server parameters, typically from $_SERVER
@@ -51,15 +51,15 @@ class ServerRequest implements ServerRequestInterface
      * @throws Exception\InvalidArgumentException For any invalid value.
      */
     public function __construct(
-        private array $serverParams = [],
+        protected array $serverParams = [],
         array $uploadedFiles = [],
         $uri = null,
         ?string $method = null,
         $body = 'php://input',
         array $headers = [],
-        private array $cookieParams = [],
-        private array $queryParams = [],
-        private $parsedBody = null,
+        protected array $cookieParams = [],
+        protected array $queryParams = [],
+        protected $parsedBody = null,
         string $protocol = '1.1'
     ) {
         $this->validateUploadedFiles($uploadedFiles);
@@ -201,7 +201,7 @@ class ServerRequest implements ServerRequestInterface
      *
      * @throws Exception\InvalidArgumentException If any leaf is not an UploadedFileInterface instance.
      */
-    private function validateUploadedFiles(array $uploadedFiles): void
+    protected function validateUploadedFiles(array $uploadedFiles): void
     {
         foreach ($uploadedFiles as $file) {
             if (is_array($file)) {

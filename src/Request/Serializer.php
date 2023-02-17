@@ -98,7 +98,7 @@ final class Serializer extends AbstractSerializer
      *
      * @throws Exception\SerializationException
      */
-    private static function getRequestLine(StreamInterface $stream): array
+    protected static function getRequestLine(StreamInterface $stream): array
     {
         $requestLine = self::getLine($stream);
 
@@ -122,7 +122,7 @@ final class Serializer extends AbstractSerializer
      * instance is returned; otherwise, the value is used to create and return
      * a new Uri instance.
      */
-    private static function createUriFromRequestTarget(string $requestTarget): Uri
+    protected static function createUriFromRequestTarget(string $requestTarget): Uri
     {
         if (preg_match('#^https?://#', $requestTarget)) {
             return new Uri($requestTarget);

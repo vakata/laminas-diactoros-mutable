@@ -35,7 +35,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
     public const HEADER_PORT  = 'X-FORWARDED-PORT';
     public const HEADER_PROTO = 'X-FORWARDED-PROTO';
 
-    private const X_FORWARDED_HEADERS = [
+    protected const X_FORWARDED_HEADERS = [
         self::HEADER_HOST,
         self::HEADER_PORT,
         self::HEADER_PROTO,
@@ -47,7 +47,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
      * @param list<non-empty-string> $trustedProxies
      * @param list<FilterUsingXForwardedHeaders::HEADER_*> $trustedHeaders
      */
-    private function __construct(private array $trustedProxies = [], private array $trustedHeaders = [])
+    protected function __construct(private array $trustedProxies = [], private array $trustedHeaders = [])
     {
     }
 
@@ -165,7 +165,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
         ], $trustedHeaders);
     }
 
-    private function isFromTrustedProxy(string $remoteAddress): bool
+    protected function isFromTrustedProxy(string $remoteAddress): bool
     {
         foreach ($this->trustedProxies as $proxy) {
             if (IPRange::matches($remoteAddress, $proxy)) {
@@ -177,7 +177,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
     }
 
     /** @throws InvalidForwardedHeaderNameException */
-    private static function validateTrustedHeaders(array $headers): void
+    protected static function validateTrustedHeaders(array $headers): void
     {
         foreach ($headers as $header) {
             if (! in_array($header, self::X_FORWARDED_HEADERS, true)) {
@@ -191,7 +191,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
      * @return list<non-empty-string>
      * @throws InvalidProxyAddressException
      */
-    private static function normalizeProxiesList(array $proxyCIDRList): array
+    protected static function normalizeProxiesList(array $proxyCIDRList): array
     {
         $foundWildcard = false;
 
@@ -215,7 +215,7 @@ final class FilterUsingXForwardedHeaders implements FilterServerRequestInterface
         return $proxyCIDRList;
     }
 
-    private static function validateProxyCIDR(mixed $cidr): bool
+    protected static function validateProxyCIDR(mixed $cidr): bool
     {
         if (! is_string($cidr) || '' === $cidr) {
             return false;

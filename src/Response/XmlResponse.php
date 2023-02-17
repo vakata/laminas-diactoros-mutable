@@ -53,7 +53,7 @@ class XmlResponse extends Response
      * @param string|StreamInterface $xml
      * @throws Exception\InvalidArgumentException If $xml is neither a string or stream.
      */
-    private function createBody($xml): StreamInterface
+    protected function createBody($xml): StreamInterface
     {
         if ($xml instanceof StreamInterface) {
             return $xml;

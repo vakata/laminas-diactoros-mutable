@@ -35,7 +35,7 @@ use const LOCK_EX;
 
 final class ResponseTest extends TestCase
 {
-    private Response $response;
+    protected Response $response;
 
     protected function setUp(): void
     {
@@ -60,7 +60,7 @@ final class ResponseTest extends TestCase
         $this->assertSame('Unprocessable Content', $response->getReasonPhrase());
     }
 
-    private function fetchIanaStatusCodes(): DOMDocument
+    protected function fetchIanaStatusCodes(): DOMDocument
     {
         $updated                 = null;
         $ianaHttpStatusCodesFile = __DIR__ . '/TestAsset/.cache/http-status-codes.xml';

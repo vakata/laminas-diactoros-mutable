@@ -42,7 +42,7 @@ class ArraySerializerTest extends TestCase
         ArraySerializer::fromArray($serializedRequest);
     }
 
-    private function createResponse(): Response
+    protected function createResponse(): Response
     {
         $stream = new Stream('php://memory', 'wb+');
         $stream->write('{"test":"value"}');
@@ -65,7 +65,7 @@ class ArraySerializerTest extends TestCase
      *     body: string,
      * }
      */
-    private function createSerializedResponse(): array
+    protected function createSerializedResponse(): array
     {
         return [
             'status_code'      => 201,

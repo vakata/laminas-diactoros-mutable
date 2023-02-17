@@ -51,7 +51,7 @@ class HtmlResponse extends Response
      * @param string|StreamInterface $html
      * @throws Exception\InvalidArgumentException If $html is neither a string or stream.
      */
-    private function createBody($html): StreamInterface
+    protected function createBody($html): StreamInterface
     {
         if ($html instanceof StreamInterface) {
             return $html;

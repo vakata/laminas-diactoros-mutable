@@ -82,7 +82,7 @@ final class Serializer extends AbstractSerializer
      * @return array Array with three elements: 0 => version, 1 => status, 2 => reason
      * @throws Exception\SerializationException If line is malformed.
      */
-    private static function getStatusLine(StreamInterface $stream): array
+    protected static function getStatusLine(StreamInterface $stream): array
     {
         $line = self::getLine($stream);
 

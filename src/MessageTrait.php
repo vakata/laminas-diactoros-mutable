@@ -45,10 +45,10 @@ trait MessageTrait
     protected $headerNames = [];
 
     /** @var string */
-    private $protocol = '1.1';
+    protected $protocol = '1.1';
 
     /** @var StreamInterface */
-    private $stream;
+    protected $stream;
 
     /**
      * Retrieves the HTTP protocol version as a string.
@@ -296,7 +296,7 @@ trait MessageTrait
     }
 
     /** @param StreamInterface|string|resource $stream */
-    private function getStream($stream, string $modeIfNotInstance): StreamInterface
+    protected function getStream($stream, string $modeIfNotInstance): StreamInterface
     {
         if ($stream instanceof StreamInterface) {
             return $stream;
@@ -320,7 +320,7 @@ trait MessageTrait
      *
      * @param array $originalHeaders Headers to filter.
      */
-    private function setHeaders(array $originalHeaders): void
+    protected function setHeaders(array $originalHeaders): void
     {
         $headerNames = $headers = [];
 
@@ -343,7 +343,7 @@ trait MessageTrait
      * @param string $version
      * @throws Exception\InvalidArgumentException On invalid HTTP protocol version.
      */
-    private function validateProtocolVersion($version): void
+    protected function validateProtocolVersion($version): void
     {
         if (empty($version)) {
             throw new Exception\InvalidArgumentException(
@@ -368,7 +368,7 @@ trait MessageTrait
     }
 
     /** @return list<string> */
-    private function filterHeaderValue(mixed $values): array
+    protected function filterHeaderValue(mixed $values): array
     {
         if (! is_array($values)) {
             $values = [$values];
@@ -400,7 +400,7 @@ trait MessageTrait
      * @param string $name
      * @throws Exception\InvalidArgumentException
      */
-    private function assertHeader($name): void
+    protected function assertHeader($name): void
     {
         HeaderSecurity::assertValidName($name);
     }

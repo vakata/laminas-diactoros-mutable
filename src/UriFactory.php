@@ -93,7 +93,7 @@ class UriFactory implements UriFactoryInterface
      * @param T $default Default value to return if header not found
      * @return string|T
      */
-    private static function getHeaderFromArray(string $name, array $headers, $default = null)
+    protected static function getHeaderFromArray(string $name, array $headers, $default = null)
     {
         $header  = strtolower($name);
         $headers = array_change_key_case($headers, CASE_LOWER);
@@ -115,7 +115,7 @@ class UriFactory implements UriFactoryInterface
      * @return array{string, int|null} Array of two items, host and port,
      *     in that order (can be passed to a list() operation).
      */
-    private static function marshalHostAndPort(array $server, array $headers): array
+    protected static function marshalHostAndPort(array $server, array $headers): array
     {
         /** @var array{string, null} $defaults */
         static $defaults = ['', null];
@@ -156,7 +156,7 @@ class UriFactory implements UriFactoryInterface
      * @return array{string, int|null} Array of two items, host and port,
      *     in that order (can be passed to a list() operation).
      */
-    private static function marshalIpv6HostAndPort(array $server, ?int $port): array
+    protected static function marshalIpv6HostAndPort(array $server, ?int $port): array
     {
         $host             = '[' . (string) $server['SERVER_ADDR'] . ']';
         $port             = $port ?: 80;
@@ -184,7 +184,7 @@ class UriFactory implements UriFactoryInterface
      * - REQUEST_URI
      * - ORIG_PATH_INFO
      */
-    private static function marshalRequestPath(array $server): string
+    protected static function marshalRequestPath(array $server): string
     {
         // IIS7 with URL Rewrite: make sure we get the unencoded url
         // (double slash problem).
@@ -211,7 +211,7 @@ class UriFactory implements UriFactoryInterface
         return $origPathInfo;
     }
 
-    private static function marshalHttpsValue(mixed $https): bool
+    protected static function marshalHttpsValue(mixed $https): bool
     {
         if (is_bool($https)) {
             return $https;
@@ -232,7 +232,7 @@ class UriFactory implements UriFactoryInterface
      * @return array{string, int|null} Array of two items, host and port, in that order (can be
      *     passed to a list() operation).
      */
-    private static function marshalHostAndPortFromHeader($host): array
+    protected static function marshalHostAndPortFromHeader($host): array
     {
         if (is_array($host)) {
             $host = implode(', ', $host);

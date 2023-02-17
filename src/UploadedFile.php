@@ -44,14 +44,14 @@ class UploadedFile implements UploadedFileInterface
         UPLOAD_ERR_EXTENSION  => 'A PHP extension stopped the file upload.',
     ];
 
-    private int $error;
+    protected int $error;
 
-    private ?string $file = null;
+    protected ?string $file = null;
 
-    private bool $moved = false;
+    protected bool $moved = false;
 
     /** @var null|StreamInterface */
-    private $stream;
+    protected $stream;
 
     /**
      * @param string|resource|StreamInterface $streamOrFile
@@ -59,10 +59,10 @@ class UploadedFile implements UploadedFileInterface
      */
     public function __construct(
         $streamOrFile,
-        private int $size,
+        protected int $size,
         int $errorStatus,
-        private ?string $clientFilename = null,
-        private ?string $clientMediaType = null
+        protected ?string $clientFilename = null,
+        protected ?string $clientMediaType = null
     ) {
         if ($errorStatus === UPLOAD_ERR_OK) {
             if (is_string($streamOrFile)) {
@@ -216,7 +216,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Write internal stream to given path
      */
-    private function writeFile(string $path): void
+    protected function writeFile(string $path): void
     {
         $handle = fopen($path, 'wb+');
         if (false === $handle) {

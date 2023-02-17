@@ -45,7 +45,7 @@ class JsonResponse extends Response
         | JSON_UNESCAPED_SLASHES;
 
     /** @var mixed */
-    private $payload;
+    protected $payload;
 
     /**
      * Create a JSON response with the given data.
@@ -69,7 +69,7 @@ class JsonResponse extends Response
         $data,
         int $status = 200,
         array $headers = [],
-        private int $encodingOptions = self::DEFAULT_JSON_FLAGS
+        protected int $encodingOptions = self::DEFAULT_JSON_FLAGS
     ) {
         $this->setPayload($data);
 
@@ -106,7 +106,7 @@ class JsonResponse extends Response
         return $this->updateBodyFor($this);
     }
 
-    private function createBodyFromJson(string $json): Stream
+    protected function createBodyFromJson(string $json): Stream
     {
         $body = new Stream('php://temp', 'wb+');
         $body->write($json);
@@ -120,7 +120,7 @@ class JsonResponse extends Response
      *
      * @throws Exception\InvalidArgumentException If unable to encode the $data to JSON.
      */
-    private function jsonEncode(mixed $data, int $encodingOptions): string
+    protected function jsonEncode(mixed $data, int $encodingOptions): string
     {
         if (is_resource($data)) {
             throw new Exception\InvalidArgumentException('Cannot JSON encode resources');
@@ -142,7 +142,7 @@ class JsonResponse extends Response
         return $json;
     }
 
-    private function setPayload(mixed $data): void
+    protected function setPayload(mixed $data): void
     {
         if (is_object($data)) {
             $data = clone $data;
@@ -157,7 +157,7 @@ class JsonResponse extends Response
      * @param self $toUpdate Instance to update.
      * @return JsonResponse Returns a new instance with an updated body.
      */
-    private function updateBodyFor(JsonResponse $toUpdate): JsonResponse
+    protected function updateBodyFor(JsonResponse $toUpdate): JsonResponse
     {
         $json = $this->jsonEncode($toUpdate->payload, $toUpdate->encodingOptions);
         $body = $this->createBodyFromJson($json);

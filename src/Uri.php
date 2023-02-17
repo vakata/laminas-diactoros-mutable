@@ -61,25 +61,25 @@ class Uri implements UriInterface, Stringable
         'https' => 443,
     ];
 
-    private string $scheme = '';
+    protected string $scheme = '';
 
-    private string $userInfo = '';
+    protected string $userInfo = '';
 
-    private string $host = '';
+    protected string $host = '';
 
     /** @var int|null */
-    private $port;
+    protected $port;
 
-    private string $path = '';
+    protected string $path = '';
 
-    private string $query = '';
+    protected string $query = '';
 
-    private string $fragment = '';
+    protected string $fragment = '';
 
     /**
      * generated uri string cache
      */
-    private ?string $uriString = null;
+    protected ?string $uriString = null;
 
     public function __construct(string $uri = '')
     {
@@ -432,7 +432,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Parse a URI into its parts, and set the properties
      */
-    private function parseUri(string $uri): void
+    protected function parseUri(string $uri): void
     {
         $parts = parse_url($uri);
 
@@ -458,7 +458,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Create a URI string from its various parts
      */
-    private static function createUriString(
+    protected static function createUriString(
         string $scheme,
         string $authority,
         string $path,
@@ -495,7 +495,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Is a given port non-standard for the current scheme?
      */
-    private function isNonStandardPort(string $scheme, string $host, ?int $port): bool
+    protected function isNonStandardPort(string $scheme, string $host, ?int $port): bool
     {
         if ('' === $scheme) {
             return '' === $host || null !== $port;
@@ -514,7 +514,7 @@ class Uri implements UriInterface, Stringable
      * @param string $scheme Scheme name.
      * @return string Filtered scheme.
      */
-    private function filterScheme(string $scheme): string
+    protected function filterScheme(string $scheme): string
     {
         $scheme = strtolower($scheme);
         $scheme = preg_replace('#:(//)?$#', '', $scheme);
@@ -537,7 +537,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Filters a part of user info in a URI to ensure it is properly encoded.
      */
-    private function filterUserInfoPart(string $part): string
+    protected function filterUserInfoPart(string $part): string
     {
         $part = $this->filterInvalidUtf8($part);
 
@@ -553,7 +553,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Filters the path of a URI to ensure it is properly encoded.
      */
-    private function filterPath(string $path): string
+    protected function filterPath(string $path): string
     {
         $path = $this->filterInvalidUtf8($path);
 
@@ -567,7 +567,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Encode invalid UTF-8 characters in given string. All other characters are unchanged.
      */
-    private function filterInvalidUtf8(string $string): string
+    protected function filterInvalidUtf8(string $string): string
     {
         // check if given string contains only valid UTF-8 characters
         if (preg_match('//u', $string)) {
@@ -589,7 +589,7 @@ class Uri implements UriInterface, Stringable
      *
      * Ensures that the values in the query string are properly urlencoded.
      */
-    private function filterQuery(string $query): string
+    protected function filterQuery(string $query): string
     {
         if ('' !== $query && str_starts_with($query, '?')) {
             $query = substr($query, 1);
@@ -617,7 +617,7 @@ class Uri implements UriInterface, Stringable
      *
      * @return array A value with exactly two elements, key and value
      */
-    private function splitQueryValue(string $value): array
+    protected function splitQueryValue(string $value): array
     {
         $data = explode('=', $value, 2);
         if (! isset($data[1])) {
@@ -629,7 +629,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Filter a fragment value to ensure it is properly encoded.
      */
-    private function filterFragment(string $fragment): string
+    protected function filterFragment(string $fragment): string
     {
         if ('' !== $fragment && str_starts_with($fragment, '#')) {
             $fragment = '%23' . substr($fragment, 1);
@@ -641,7 +641,7 @@ class Uri implements UriInterface, Stringable
     /**
      * Filter a query string key or value, or a fragment.
      */
-    private function filterQueryOrFragment(string $value): string
+    protected function filterQueryOrFragment(string $value): string
     {
         $value = $this->filterInvalidUtf8($value);
 
@@ -655,7 +655,7 @@ class Uri implements UriInterface, Stringable
     /**
      * URL encode a character returned by a regex.
      */
-    private function urlEncodeChar(array $matches): string
+    protected function urlEncodeChar(array $matches): string
     {
         return rawurlencode($matches[0]);
     }

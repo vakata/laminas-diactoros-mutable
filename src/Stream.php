@@ -39,7 +39,7 @@ class Stream implements StreamInterface, Stringable
     /**
      * A list of allowed stream resource types that are allowed to instantiate a Stream
      */
-    private const ALLOWED_STREAM_RESOURCE_TYPES = ['gd', 'stream'];
+    protected const ALLOWED_STREAM_RESOURCE_TYPES = ['gd', 'stream'];
 
     /** @var resource|null */
     protected $resource;
@@ -317,7 +317,7 @@ class Stream implements StreamInterface, Stringable
      * @param string $mode Resource mode for stream target.
      * @throws Exception\InvalidArgumentException For invalid streams or resources.
      */
-    private function setStream($stream, string $mode = 'r'): void
+    protected function setStream($stream, string $mode = 'r'): void
     {
         $resource = $stream;
 
@@ -352,7 +352,7 @@ class Stream implements StreamInterface, Stringable
      * @param mixed $resource Stream resource.
      * @psalm-assert-if-true resource $resource
      */
-    private function isValidStreamResourceType(mixed $resource): bool
+    protected function isValidStreamResourceType(mixed $resource): bool
     {
         if (is_resource($resource)) {
             return in_array(get_resource_type($resource), self::ALLOWED_STREAM_RESOURCE_TYPES, true);

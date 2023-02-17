@@ -34,7 +34,7 @@ class Response implements ResponseInterface
      *
      * @psalm-var array<positive-int, non-empty-string>
      */
-    private array $phrases = [
+    protected array $phrases = [
         // INFORMATIONAL CODES
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -108,9 +108,9 @@ class Response implements ResponseInterface
         599 => 'Network Connect Timeout Error',
     ];
 
-    private string $reasonPhrase;
+    protected string $reasonPhrase;
 
-    private int $statusCode;
+    protected int $statusCode;
 
     /**
      * @param string|resource|StreamInterface $body Stream identifier and/or actual stream resource
@@ -157,7 +157,7 @@ class Response implements ResponseInterface
      * @param string $reasonPhrase
      * @throws Exception\InvalidArgumentException On an invalid status code.
      */
-    private function setStatusCode($code, $reasonPhrase = ''): void
+    protected function setStatusCode($code, $reasonPhrase = ''): void
     {
         if (
             ! is_numeric($code)

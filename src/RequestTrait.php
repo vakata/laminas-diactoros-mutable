@@ -30,17 +30,17 @@ trait RequestTrait
     use MessageTrait;
 
     /** @var string */
-    private $method = 'GET';
+    protected $method = 'GET';
 
     /**
      * The request-target, if it has been provided or calculated.
      *
      * @var null|string
      */
-    private $requestTarget;
+    protected $requestTarget;
 
     /** @var UriInterface */
-    private $uri;
+    protected $uri;
 
     /**
      * Initialize request state.
@@ -53,7 +53,7 @@ trait RequestTrait
      * @param array $headers Headers for the message, if any.
      * @throws Exception\InvalidArgumentException For any invalid value.
      */
-    private function initialize(
+    protected function initialize(
         $uri = null,
         ?string $method = null,
         $body = 'php://memory',
@@ -91,7 +91,7 @@ trait RequestTrait
      * @param null|string|UriInterface $uri
      * @throws Exception\InvalidArgumentException
      */
-    private function createUri($uri): UriInterface
+    protected function createUri($uri): UriInterface
     {
         if ($uri instanceof UriInterface) {
             return $uri;
@@ -281,7 +281,7 @@ trait RequestTrait
      * @param string $method
      * @throws Exception\InvalidArgumentException On invalid HTTP method.
      */
-    private function setMethod($method): void
+    protected function setMethod($method): void
     {
         if (! is_string($method)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -302,7 +302,7 @@ trait RequestTrait
     /**
      * Retrieve the host from the URI instance
      */
-    private function getHostFromUri(): string
+    protected function getHostFromUri(): string
     {
         $host  = $this->uri->getHost();
         $host .= $this->uri->getPort() ? ':' . $this->uri->getPort() : '';

@@ -34,10 +34,10 @@ use const UPLOAD_ERR_PARTIAL;
 final class UploadedFileTest extends TestCase
 {
     /** @var false|null|string */
-    private $orgFile;
+    protected $orgFile;
 
     /** @var mixed */
-    private $tmpFile;
+    protected $tmpFile;
 
     protected function setUp(): void
     {

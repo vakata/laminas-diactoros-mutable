@@ -37,9 +37,9 @@ use const DIRECTORY_SEPARATOR;
 final class StreamTest extends TestCase
 {
     /** @var string|null|false */
-    private $tmpnam;
+    protected $tmpnam;
 
-    private Stream $stream;
+    protected Stream $stream;
 
     protected function setUp(): void
     {
@@ -320,7 +320,7 @@ final class StreamTest extends TestCase
         ];
     }
 
-    private function findNonExistentTempName(): string
+    protected function findNonExistentTempName(): string
     {
         do {
             $tmpnam = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'diac' . uniqid();

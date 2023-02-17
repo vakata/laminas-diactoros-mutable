@@ -24,7 +24,7 @@ final class HeaderSecurity
      *
      * @codeCoverageIgnore
      */
-    private function __construct()
+    protected function __construct()
     {
     }
 

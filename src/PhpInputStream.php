@@ -13,9 +13,9 @@ use function stream_get_contents;
  */
 class PhpInputStream extends Stream implements Stringable
 {
-    private string $cache = '';
+    protected string $cache = '';
 
-    private bool $reachedEof = false;
+    protected bool $reachedEof = false;
 
     /**
      * @param  string|resource $stream

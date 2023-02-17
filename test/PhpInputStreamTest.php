@@ -12,9 +12,9 @@ use function substr;
 
 final class PhpInputStreamTest extends TestCase
 {
-    private string $file;
+    protected string $file;
 
-    private PhpInputStream $stream;
+    protected PhpInputStream $stream;
 
     protected function setUp(): void
     {
