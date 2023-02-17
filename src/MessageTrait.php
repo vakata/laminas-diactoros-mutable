@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\Diactoros;
 
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 use function array_map;
@@ -76,12 +75,11 @@ trait MessageTrait
      * @param string $version HTTP protocol version
      * @return static
      */
-    public function withProtocolVersion($version): MessageInterface
+    public function withProtocolVersion($version): static
     {
         $this->validateProtocolVersion($version);
-        $new           = clone $this;
-        $new->protocol = $version;
-        return $new;
+        $this->protocol = $version;
+        return $this;
     }
 
     /**
@@ -194,23 +192,22 @@ trait MessageTrait
      * @return static
      * @throws Exception\InvalidArgumentException For invalid header names or values.
      */
-    public function withHeader($name, $value): MessageInterface
+    public function withHeader($name, $value): static
     {
         $this->assertHeader($name);
 
         $normalized = strtolower($name);
 
-        $new = clone $this;
-        if ($new->hasHeader($name)) {
-            unset($new->headers[$new->headerNames[$normalized]]);
+        if ($this->hasHeader($name)) {
+            unset($this->headers[$this->headerNames[$normalized]]);
         }
 
         $value = $this->filterHeaderValue($value);
 
-        $new->headerNames[$normalized] = $name;
-        $new->headers[$name]           = $value;
+        $this->headerNames[$normalized] = $name;
+        $this->headers[$name]           = $value;
 
-        return $new;
+        return $this;
     }
 
     /**
@@ -230,7 +227,7 @@ trait MessageTrait
      * @return static
      * @throws Exception\InvalidArgumentException For invalid header names or values.
      */
-    public function withAddedHeader($name, $value): MessageInterface
+    public function withAddedHeader($name, $value): static
     {
         $this->assertHeader($name);
 
@@ -239,11 +236,9 @@ trait MessageTrait
         }
 
         $header = $this->headerNames[strtolower($name)];
-
-        $new                   = clone $this;
         $value                 = $this->filterHeaderValue($value);
-        $new->headers[$header] = array_merge($this->headers[$header], $value);
-        return $new;
+        $this->headers[$header] = array_merge($this->headers[$header], $value);
+        return $this;
     }
 
     /**
@@ -258,18 +253,17 @@ trait MessageTrait
      * @param string $name Case-insensitive header field name to remove.
      * @return static
      */
-    public function withoutHeader($name): MessageInterface
+    public function withoutHeader($name): static
     {
         if (! is_string($name) || $name === '' || ! $this->hasHeader($name)) {
-            return clone $this;
+            return $this;
         }
 
         $normalized = strtolower($name);
         $original   = $this->headerNames[$normalized];
 
-        $new = clone $this;
-        unset($new->headers[$original], $new->headerNames[$normalized]);
-        return $new;
+        unset($this->headers[$original], $this->headerNames[$normalized]);
+        return $this;
     }
 
     /**
@@ -295,11 +289,10 @@ trait MessageTrait
      * @return static
      * @throws Exception\InvalidArgumentException When the body is not valid.
      */
-    public function withBody(StreamInterface $body): MessageInterface
+    public function withBody(StreamInterface $body): static
     {
-        $new         = clone $this;
-        $new->stream = $body;
-        return $new;
+        $this->stream = $body;
+        return $this;
     }
 
     /** @param StreamInterface|string|resource $stream */

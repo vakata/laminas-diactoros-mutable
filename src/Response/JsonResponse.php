@@ -91,9 +91,8 @@ class JsonResponse extends Response
 
     public function withPayload(mixed $data): JsonResponse
     {
-        $new = clone $this;
-        $new->setPayload($data);
-        return $this->updateBodyFor($new);
+        $this->setPayload($data);
+        return $this->updateBodyFor($this);
     }
 
     public function getEncodingOptions(): int
@@ -103,9 +102,8 @@ class JsonResponse extends Response
 
     public function withEncodingOptions(int $encodingOptions): JsonResponse
     {
-        $new                  = clone $this;
-        $new->encodingOptions = $encodingOptions;
-        return $this->updateBodyFor($new);
+        $this->encodingOptions = $encodingOptions;
+        return $this->updateBodyFor($this);
     }
 
     private function createBodyFromJson(string $json): Stream

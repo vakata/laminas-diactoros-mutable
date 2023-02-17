@@ -92,12 +92,11 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withUploadedFiles(array $uploadedFiles): ServerRequest
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $this->validateUploadedFiles($uploadedFiles);
-        $new                = clone $this;
-        $new->uploadedFiles = $uploadedFiles;
-        return $new;
+        $this->uploadedFiles = $uploadedFiles;
+        return $this;
     }
 
     /**
@@ -111,11 +110,10 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withCookieParams(array $cookies): ServerRequest
+    public function withCookieParams(array $cookies): static
     {
-        $new               = clone $this;
-        $new->cookieParams = $cookies;
-        return $new;
+        $this->cookieParams = $cookies;
+        return $this;
     }
 
     /**
@@ -129,11 +127,10 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withQueryParams(array $query): ServerRequest
+    public function withQueryParams(array $query): static
     {
-        $new              = clone $this;
-        $new->queryParams = $query;
-        return $new;
+        $this->queryParams = $query;
+        return $this;
     }
 
     /**
@@ -147,7 +144,7 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withParsedBody($data): ServerRequest
+    public function withParsedBody($data): static
     {
         if (! is_array($data) && ! is_object($data) && null !== $data) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -157,9 +154,8 @@ class ServerRequest implements ServerRequestInterface
             ));
         }
 
-        $new             = clone $this;
-        $new->parsedBody = $data;
-        return $new;
+        $this->parsedBody = $data;
+        return $this;
     }
 
     /**
@@ -185,21 +181,19 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withAttribute($attribute, $value): ServerRequest
+    public function withAttribute($attribute, $value): static
     {
-        $new                         = clone $this;
-        $new->attributes[$attribute] = $value;
-        return $new;
+        $this->attributes[$attribute] = $value;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withoutAttribute($name): ServerRequest
+    public function withoutAttribute($name): static
     {
-        $new = clone $this;
-        unset($new->attributes[$name]);
-        return $new;
+        unset($this->attributes[$name]);
+        return $this;
     }
 
     /**

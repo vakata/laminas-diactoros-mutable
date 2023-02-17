@@ -218,7 +218,7 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withScheme($scheme): UriInterface
+    public function withScheme($scheme): static
     {
         if (! is_string($scheme)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -235,10 +235,8 @@ class Uri implements UriInterface, Stringable
             return $this;
         }
 
-        $new         = clone $this;
-        $new->scheme = $scheme;
-
-        return $new;
+        $this->scheme = $scheme;
+        return $this;
     }
 
     // The following rule is buggy for parameters attributes
@@ -256,7 +254,7 @@ class Uri implements UriInterface, Stringable
         $user,
         #[SensitiveParameter]
         $password = null
-    ): UriInterface {
+    ): static {
         if (! is_string($user)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s expects a string user argument; received %s',
@@ -281,11 +279,8 @@ class Uri implements UriInterface, Stringable
             // Do nothing if no change was made.
             return $this;
         }
-
-        $new           = clone $this;
-        $new->userInfo = $info;
-
-        return $new;
+        $this->userInfo = $info;
+        return $this;
     }
 
     // phpcs:enable SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing.NoSpaceBetweenTypeHintAndParameter
@@ -293,7 +288,7 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withHost($host): UriInterface
+    public function withHost($host): static
     {
         if (! is_string($host)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -307,17 +302,15 @@ class Uri implements UriInterface, Stringable
             // Do nothing if no change was made.
             return $this;
         }
+        $this->host = strtolower($host);
 
-        $new       = clone $this;
-        $new->host = strtolower($host);
-
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withPort($port): UriInterface
+    public function withPort($port): static
     {
         if ($port !== null) {
             if (! is_numeric($port) || is_float($port)) {
@@ -342,16 +335,15 @@ class Uri implements UriInterface, Stringable
             ));
         }
 
-        $new       = clone $this;
-        $new->port = $port;
+        $this->port = $port;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withPath($path): UriInterface
+    public function withPath($path): static
     {
         if (! is_string($path)) {
             throw new Exception\InvalidArgumentException(
@@ -378,16 +370,15 @@ class Uri implements UriInterface, Stringable
             return $this;
         }
 
-        $new       = clone $this;
-        $new->path = $path;
+        $this->path = $path;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withQuery($query): UriInterface
+    public function withQuery($query): static
     {
         if (! is_string($query)) {
             throw new Exception\InvalidArgumentException(
@@ -408,16 +399,15 @@ class Uri implements UriInterface, Stringable
             return $this;
         }
 
-        $new        = clone $this;
-        $new->query = $query;
+        $this->query = $query;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withFragment($fragment): UriInterface
+    public function withFragment($fragment): static
     {
         if (! is_string($fragment)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -434,10 +424,9 @@ class Uri implements UriInterface, Stringable
             return $this;
         }
 
-        $new           = clone $this;
-        $new->fragment = $fragment;
+        $this->fragment = $fragment;
 
-        return $new;
+        return $this;
     }
 
     /**

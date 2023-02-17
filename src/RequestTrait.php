@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\Diactoros;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -159,7 +158,7 @@ trait RequestTrait
      * @throws Exception\InvalidArgumentException If the request target is invalid.
      * @return static
      */
-    public function withRequestTarget($requestTarget): RequestInterface
+    public function withRequestTarget($requestTarget): static
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new Exception\InvalidArgumentException(
@@ -167,9 +166,8 @@ trait RequestTrait
             );
         }
 
-        $new                = clone $this;
-        $new->requestTarget = $requestTarget;
-        return $new;
+        $this->requestTarget = $requestTarget;
+        return $this;
     }
 
     /**
@@ -197,11 +195,10 @@ trait RequestTrait
      * @throws Exception\InvalidArgumentException For invalid HTTP methods.
      * @return static
      */
-    public function withMethod($method): RequestInterface
+    public function withMethod($method): static
     {
-        $new = clone $this;
-        $new->setMethod($method);
-        return $new;
+        $this->setMethod($method);
+        return $this;
     }
 
     /**
@@ -245,17 +242,16 @@ trait RequestTrait
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false): RequestInterface
+    public function withUri(UriInterface $uri, $preserveHost = false): static
     {
-        $new      = clone $this;
-        $new->uri = $uri;
+        $this->uri = $uri;
 
         if ($preserveHost && $this->hasHeader('Host')) {
-            return $new;
+            return $this;
         }
 
         if (! $uri->getHost()) {
-            return $new;
+            return $this;
         }
 
         $host = $uri->getHost();
@@ -263,20 +259,20 @@ trait RequestTrait
             $host .= ':' . $uri->getPort();
         }
 
-        $new->headerNames['host'] = 'Host';
+        $this->headerNames['host'] = 'Host';
 
         // Remove an existing host header if present, regardless of current
         // de-normalization of the header name.
         // @see https://github.com/zendframework/zend-diactoros/issues/91
-        foreach (array_keys($new->headers) as $header) {
+        foreach (array_keys($this->headers) as $header) {
             if (strtolower($header) === 'host') {
-                unset($new->headers[$header]);
+                unset($this->headers[$header]);
             }
         }
 
-        $new->headers['Host'] = [$host];
+        $this->headers['Host'] = [$host];
 
-        return $new;
+        return $this;
     }
 
     /**
