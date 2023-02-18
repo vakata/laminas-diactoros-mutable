@@ -142,7 +142,11 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Undocumented function
+     *
+     * @param int $code
+     * @param string $reasonPhrase
+     * @return $this
      */
     public function withStatus($code, $reasonPhrase = ''): static
     {

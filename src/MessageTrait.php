@@ -189,7 +189,7 @@ trait MessageTrait
      *
      * @param string $name Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
-     * @return static
+     * @return $this
      * @throws Exception\InvalidArgumentException For invalid header names or values.
      */
     public function withHeader($name, $value): static
