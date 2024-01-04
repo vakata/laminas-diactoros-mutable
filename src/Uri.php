@@ -62,7 +62,7 @@ class Uri implements UriInterface, Stringable
 
     protected string $host = '';
 
-    protected ?int $port;
+    protected ?int $port = null;
 
     protected string $path = '';
 
