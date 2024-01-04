@@ -10,12 +10,7 @@ use Stringable;
 
 use function array_keys;
 use function explode;
-use function gettype;
 use function implode;
-use function is_float;
-use function is_numeric;
-use function is_object;
-use function is_string;
 use function ltrim;
 use function parse_url;
 use function preg_match;
@@ -67,8 +62,7 @@ class Uri implements UriInterface, Stringable
 
     protected string $host = '';
 
-    /** @var int|null */
-    protected $port;
+    protected ?int $port;
 
     protected string $path = '';
 
@@ -218,16 +212,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withScheme($scheme): static
+    public function withScheme(string $scheme): static
     {
-        if (! is_string($scheme)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a string argument; received %s',
-                __METHOD__,
-                is_object($scheme) ? $scheme::class : gettype($scheme)
-            ));
-        }
-
         $scheme = $this->filterScheme($scheme);
 
         if ($scheme === $this->scheme) {
@@ -251,25 +237,10 @@ class Uri implements UriInterface, Stringable
      * {@inheritdoc}
      */
     public function withUserInfo(
-        $user,
+        string $user,
         #[SensitiveParameter]
-        $password = null
+        ?string $password = null
     ): static {
-        if (! is_string($user)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a string user argument; received %s',
-                __METHOD__,
-                is_object($user) ? $user::class : gettype($user)
-            ));
-        }
-        if (null !== $password && ! is_string($password)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a string or null password argument; received %s',
-                __METHOD__,
-                is_object($password) ? $password::class : gettype($password)
-            ));
-        }
-
         $info = $this->filterUserInfoPart($user);
         if (null !== $password) {
             $info .= ':' . $this->filterUserInfoPart($password);
@@ -288,16 +259,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withHost($host): static
+    public function withHost(string $host): static
     {
-        if (! is_string($host)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a string argument; received %s',
-                __METHOD__,
-                is_object($host) ? $host::class : gettype($host)
-            ));
-        }
-
         if ($host === $this->host) {
             // Do nothing if no change was made.
             return $this;
@@ -310,19 +273,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withPort($port): static
+    public function withPort(?int $port): static
     {
-        if ($port !== null) {
-            if (! is_numeric($port) || is_float($port)) {
-                throw new Exception\InvalidArgumentException(sprintf(
-                    'Invalid port "%s" specified; must be an integer, an integer string, or null',
-                    is_object($port) ? $port::class : gettype($port)
-                ));
-            }
-
-            $port = (int) $port;
-        }
-
         if ($port === $this->port) {
             // Do nothing if no change was made.
             return $this;
@@ -343,14 +295,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withPath($path): static
+    public function withPath(string $path): static
     {
-        if (! is_string($path)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid path provided; must be a string'
-            );
-        }
-
         if (str_contains($path, '?')) {
             throw new Exception\InvalidArgumentException(
                 'Invalid path provided; must not contain a query string'
@@ -378,14 +324,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withQuery($query): static
+    public function withQuery(string $query): static
     {
-        if (! is_string($query)) {
-            throw new Exception\InvalidArgumentException(
-                'Query string must be a string'
-            );
-        }
-
         if (str_contains($query, '#')) {
             throw new Exception\InvalidArgumentException(
                 'Query string must not include a URI fragment'
@@ -407,16 +347,8 @@ class Uri implements UriInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function withFragment($fragment): static
+    public function withFragment(string $fragment): static
     {
-        if (! is_string($fragment)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a string argument; received %s',
-                __METHOD__,
-                is_object($fragment) ? $fragment::class : gettype($fragment)
-            ));
-        }
-
         $fragment = $this->filterFragment($fragment);
 
         if ($fragment === $this->fragment) {

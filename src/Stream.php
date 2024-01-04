@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\Diactoros;
 
-use GdImage;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use Stringable;
@@ -44,11 +43,11 @@ class Stream implements StreamInterface, Stringable
     /** @var resource|null */
     protected $resource;
 
-    /** @var string|resource */
+    /** @var string|object|resource|null */
     protected $stream;
 
     /**
-     * @param string|resource $stream
+     * @param string|object|resource $stream
      * @param string $mode Mode with which to open stream
      * @throws Exception\InvalidArgumentException
      */
@@ -103,7 +102,7 @@ class Stream implements StreamInterface, Stringable
     /**
      * Attach a new stream/resource to the instance.
      *
-     * @param string|resource $resource
+     * @param string|object|resource $resource
      * @throws Exception\InvalidArgumentException For stream identifier that cannot be cast to a resource.
      * @throws Exception\InvalidArgumentException For non-resource stream.
      */
@@ -174,7 +173,7 @@ class Stream implements StreamInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function seek($offset, $whence = SEEK_SET): void
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
         if (! $this->resource) {
             throw Exception\UnseekableStreamException::dueToMissingResource();
@@ -296,7 +295,7 @@ class Stream implements StreamInterface, Stringable
     /**
      * {@inheritdoc}
      */
-    public function getMetadata($key = null)
+    public function getMetadata(?string $key = null)
     {
         if (null === $key) {
             return stream_get_meta_data($this->resource);
@@ -313,7 +312,7 @@ class Stream implements StreamInterface, Stringable
     /**
      * Set the internal stream resource.
      *
-     * @param string|resource $stream String stream target or stream resource.
+     * @param string|object|resource $stream String stream target or stream resource.
      * @param string $mode Resource mode for stream target.
      * @throws Exception\InvalidArgumentException For invalid streams or resources.
      */
@@ -356,10 +355,6 @@ class Stream implements StreamInterface, Stringable
     {
         if (is_resource($resource)) {
             return in_array(get_resource_type($resource), self::ALLOWED_STREAM_RESOURCE_TYPES, true);
-        }
-
-        if ($resource instanceof GdImage) {
-            return true;
         }
 
         return false;

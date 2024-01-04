@@ -7,12 +7,6 @@ namespace Laminas\Diactoros;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-use function gettype;
-use function is_float;
-use function is_numeric;
-use function is_object;
-use function is_scalar;
-use function is_string;
 use function sprintf;
 
 /**
@@ -148,7 +142,7 @@ class Response implements ResponseInterface
      * @param string $reasonPhrase
      * @return $this
      */
-    public function withStatus($code, $reasonPhrase = ''): static
+    public function withStatus(int $code, string $reasonPhrase = ''): static
     {
         $this->setStatusCode($code, $reasonPhrase);
         return $this;
@@ -161,26 +155,17 @@ class Response implements ResponseInterface
      * @param string $reasonPhrase
      * @throws Exception\InvalidArgumentException On an invalid status code.
      */
-    protected function setStatusCode($code, $reasonPhrase = ''): void
+    protected function setStatusCode(int $code, string $reasonPhrase = ''): void
     {
         if (
-            ! is_numeric($code)
-            || is_float($code)
-            || $code < static::MIN_STATUS_CODE_VALUE
+            $code < static::MIN_STATUS_CODE_VALUE
             || $code > static::MAX_STATUS_CODE_VALUE
         ) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Invalid status code "%s"; must be an integer between %d and %d, inclusive',
-                is_scalar($code) ? $code : gettype($code),
+                $code,
                 static::MIN_STATUS_CODE_VALUE,
                 static::MAX_STATUS_CODE_VALUE
-            ));
-        }
-
-        if (! is_string($reasonPhrase)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Unsupported response reason phrase; must be a string, received %s',
-                is_object($reasonPhrase) ? $reasonPhrase::class : gettype($reasonPhrase)
             ));
         }
 
@@ -189,6 +174,6 @@ class Response implements ResponseInterface
         }
 
         $this->reasonPhrase = $reasonPhrase;
-        $this->statusCode   = (int) $code;
+        $this->statusCode   = $code;
     }
 }

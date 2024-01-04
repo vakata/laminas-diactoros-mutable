@@ -53,7 +53,7 @@ class ServerRequest implements ServerRequestInterface
     public function __construct(
         protected array $serverParams = [],
         array $uploadedFiles = [],
-        $uri = null,
+        null|string|UriInterface $uri = null,
         ?string $method = null,
         $body = 'php://input',
         array $headers = [],
@@ -65,7 +65,7 @@ class ServerRequest implements ServerRequestInterface
         $this->validateUploadedFiles($uploadedFiles);
 
         if ($body === 'php://input') {
-            $body = new PhpInputStream();
+            $body = new Stream($body, 'r');
         }
 
         $this->initialize($uri, $method, $body, $headers);
@@ -169,7 +169,7 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute($attribute, $default = null)
+    public function getAttribute(string $attribute, $default = null)
     {
         if (! array_key_exists($attribute, $this->attributes)) {
             return $default;
@@ -181,7 +181,7 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withAttribute($attribute, $value): static
+    public function withAttribute(string $attribute, $value): static
     {
         $this->attributes[$attribute] = $value;
         return $this;
@@ -190,7 +190,7 @@ class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withoutAttribute($name): static
+    public function withoutAttribute(string $name): static
     {
         unset($this->attributes[$name]);
         return $this;
